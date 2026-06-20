@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ heading }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{{ submit_text }}</button>
+    </form>
+    {% if extra_link %}
+        <a href="{% url extra_link %}">{{ extra_link_text }}</a>
+    {% endif %}
+{% endblock %}

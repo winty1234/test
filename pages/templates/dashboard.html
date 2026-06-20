@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="slider">
+    <img src="{% static 'images/slide1.jpeg' %}" class="active" alt="Слайд 1">
+    <img src="{% static 'images/slide2.jpeg' %}" alt="Слайд 2">
+    <img src="{% static 'images/slide3.jpeg' %}" alt="Слайд 3">
+    <img src="{% static 'images/slide4.jpeg' %}" alt="Слайд 4">
+    <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
+    <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
+</div>
+
+<script>
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slider img");
+
+    function showSlide(n) {
+        slides[slideIndex].classList.remove("active");
+        slideIndex = (n + slides.length) % slides.length;
+        slides[slideIndex].classList.add("active");
+    }
+
+    function changeSlide(step) {
+        showSlide(slideIndex + step);
+    }
+
+    setInterval(function () {
+        changeSlide(1);
+    }, 3000);
+</script>
+
+<a class="btn" href="{% url 'application_create' %}">Создать заявку</a>
+
+<div class="applications-list">
+    {% for app in applications %}
+    <div class="card">
+        <div class="card-header">
+            <h3>Заявка #{{ app.id }}</h3>
+            <span>Создана {{ app.time_start|date:"d.m.Y" }}</span>
+        </div>
+        <div class="card-content">
+            <span>Транспорт: {{ app.get_transport_display }}</span>
+            <span>Оплата: {{ app.get_payment_type_display }}</span>
+        </div>
+        <div class="card-footer">
+            <span>Статус: {{ app.get_status_display }}</span>
+            {% if app.status != "new" %}
+            <a href="{% url 'review' app.id %}">Оставить отзыв</a>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+
+{% if page_obj.has_next or page_obj.has_previous %}
+<div class="pagination">
+    <div class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"><-</a>
+        {% endif %}
+        <p class="current">{{ page_obj.number }}</p>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number  }}">-></a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+
+{% if request.user.is_superuser %}
+<a href="{% url 'admin:pages_application_changelist' %}">Админ панель</a>
+{% endif %}
+{% endblock %}
