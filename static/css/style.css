@@ -18,14 +18,42 @@ body {
     font-size: 16px;
     background: #f8f9fa;
     color: #6c757d;
+}
+
+.site-header {
     display: flex;
-    justify-content: center;
-    padding: 40px 16px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background: #0d47a1;
+}
+.site-header .logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+}
+.site-header nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.site-header nav a {
+    color: #fff;
+}
+.site-header nav button {
+    padding: 6px 14px;
+    font-size: 16px;
+    color: #0d47a1;
+    background: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .container {
     width: 100%;
     max-width: 720px;
+    margin: 40px auto;
     padding: 32px;
     background: #fff;
     border-radius: 12px;
